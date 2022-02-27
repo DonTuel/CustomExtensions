@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CustomExtensions")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Custom extensions for various C# variable types.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("dba TuelWyrks")]
 [assembly: AssemblyProduct("CustomExtensions")]
-[assembly: AssemblyCopyright("Copyright ©  2022")]
+[assembly: AssemblyCopyright("Copyright ©  2022 TuelWyrks")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

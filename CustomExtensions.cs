@@ -71,6 +71,18 @@ namespace CustomExtensions
 
             return -1;
         }
+        public static int LastIndexAnyOf(this string value, params char[] inValue)
+        {
+            foreach (char chr in inValue)
+            {
+                if (value.Contains(chr))
+                {
+                    return value.LastIndexOf(chr);
+                }
+            }
+
+            return -1;
+        }
         public static int Count(this string value, char chr)
         {
             int iCnt = 0;
@@ -319,7 +331,7 @@ namespace CustomExtensions
                 case '"':
                     idx = value.IndexOf('"', 1);
                     idx = value.IndexOfAny(specials, idx);
-                    str = ItemSubString(value, idx);
+                    str = ItemSubstring(value, idx);
                     break;
 
                 case '{':
@@ -377,7 +389,7 @@ namespace CustomExtensions
                     else if (firstChar == '[') { idx = value.IndexOf(']', 1); }
                     else if (firstChar == '|') { idx = value.IndexOf('|', 1); }
                     else { idx = value.IndexOf('%', 1); }
-                    str = ItemSubString(value, idx);
+                    str = ItemSubstring(value, idx);
                     break;
 
                 default:
@@ -406,24 +418,28 @@ namespace CustomExtensions
         }
         public static byte[] ToByteArray(this string value)
         {
-            byte[] byteArray = new byte[value.Length];
+            byte[] ByteArray = new byte[value.Length];
 
             for (int i = 0; i < value.Length; i++)
             {
-                byteArray[i] = (byte)value[i];
+                ByteArray[i] = (byte)value[i];
             }
 
-            return byteArray;
+            return ByteArray;
         }
-        public static string ByteArrayToString(this string value, params byte[] inValue)
+        public static byte[] ToByteArray(this string value, int start, int length)
+        {
+            return ToByteArray(value.Substring(start, length));
+        }
+        public static String ByteArrayToString(this string value, params byte[] inValue)
         {
             return value.ByteArrayToString(0, inValue.Length, inValue);
         }
-        public static string ByteArrayToString(this string value, int length, params byte[] inValue)
+        public static String ByteArrayToString(this string value, int length, params byte[] inValue)
         {
             return value.ByteArrayToString(0, length, inValue);
         }
-        public static string ByteArrayToString(this string value, int start, int length, params byte[] inValue)
+        public static String ByteArrayToString(this string value, int start, int length, params byte[] inValue)
         {
             if ((start > inValue.Length) || (start < 0)) { return null; }
 
@@ -509,7 +525,7 @@ namespace CustomExtensions
 
             return outStr.TrimEnd(delim);
         }
-        private static string ItemSubString(string value, int idx)
+        private static string ItemSubstring(string value, int idx)
         {
             if (idx < 0)
             {
@@ -593,6 +609,137 @@ namespace CustomExtensions
             }
 
             return str;
+        }
+    }
+
+    public static class ByteExtensions
+    {
+        public static string BytesToHexString(this byte[] value, int start, int length)
+        {
+            string ret = "";
+            if (length > (value.Length - start)) { length = (value.Length - start); }
+            for (int i = 0; i < length; i++)
+            {
+                ret += value[i + start].ToString("X2");
+            }
+            return ret;
+        }
+
+        public static string BytesToHexString(this byte[] value, int start)
+        {
+            return BytesToHexString(value, start, value.Length - start);
+        }
+
+        public static string BytesToHexString(this byte[] value)
+        {
+            return BytesToHexString(value, 0, value.Length);
+        }
+
+        public static string BytesToString(this byte[] value, int start, int length)
+        {
+            string ret = "";
+            for (int i = 0; i < length; i++)
+            {
+                ret += value[i + start];
+            }
+            return ret;
+        }
+
+        public static string BytesToString(this byte[] value, int start)
+        {
+            return BytesToString(value, start, value.Length - start);
+        }
+
+        public static string BytesToString(this byte[] value)
+        {
+            return BytesToString(value, 0, value.Length);
+        }
+
+        public static Char[] BytesToChars(this byte[] value, int start, int length)
+        {
+            Char[] ret = new Char[length];
+
+            if (length > (value.Length - start)) { length = (value.Length - start); }
+            for (int i = 0; i < length; i++)
+            {
+                ret[i] = (Char)value[i + start];
+            }
+            return ret;
+        }
+
+        public static Char[] BytesToChars(this byte[] value, int start)
+        {
+            return BytesToChars(value, start, value.Length - start);
+        }
+
+        public static Char[] BytesToChars(this byte[] value)
+        {
+            return BytesToChars(value, 0, value.Length);
+        }
+
+        public static string CharsToString(this byte[] value, int start, int length)
+        {
+            string ret = "";
+            for (int i = start; i < (length - start); i++)
+            {
+                ret += (Char)value[i];
+            }
+            return ret;
+        }
+
+        public static string CharsToString(this byte[] value, int start)
+        {
+            return CharsToString(value, start, value.Length - start);
+        }
+
+        public static string CharsToString(this byte[] value)
+        {
+            return CharsToString(value, 0, value.Length);
+        }
+    }
+
+    public static class CharExtensions
+    {
+        public static string CharsToString(this char[] value, int start, int length)
+        {
+            string ret = "";
+            for (int i = start; i < (length - start); i++)
+            {
+                ret += value[i];
+            }
+            return ret;
+        }
+
+        public static string CharsToString(this char[] value, int start)
+        {
+            return CharsToString(value, start, value.Length - start);
+        }
+
+        public static string CharsToString(this char[] value)
+        {
+            return CharsToString(value, 0, value.Length);
+        }
+
+        public static byte[] CharsToBytes(this char[] value, int start, int length)
+        {
+            byte[] ret = new byte[length];
+
+            if (length > (value.Length - start)) { length = (value.Length - start); }
+            for (int i = 0; i < length; i++)
+            {
+                ret[i] = (byte)value[i + start];
+            }
+            return ret;
+        }
+
+        public static byte[] CharsToBytes(this char[] value, int start)
+        {
+            return CharsToBytes(value, start, value.Length - start);
+        }
+
+        public static byte[] CharsToBytes(this char[] value)
+        {
+            return CharsToBytes(value, 0, value.Length);
         }
     }
 }

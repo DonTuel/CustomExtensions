@@ -16,8 +16,10 @@ namespace CustomExtensions
                 switch (value.ToLower())
                 {
                     case "true":
+                    case "yes":
                         return true;
                     case "false":
+                    case "no":
                         return false;
                     default:
                         break;
@@ -33,6 +35,17 @@ namespace CustomExtensions
             }
 
             return false;
+        }
+        public static bool ContainsAllOf(this string value, params string[] inValue)
+        {
+            int iCount = 0;
+            
+            foreach (string str in inValue)
+            {
+                if (value.Contains(str)) { iCount += 1; }
+            }
+
+            return (iCount == inValue.Length);
         }
         public static int FindAnyOf(this string value, params string[] inValue)
         {
@@ -61,27 +74,25 @@ namespace CustomExtensions
         }
         public static int LastIndexAnyOf(this string value, params string[] inValue)
         {
+            int iRet = -1;
+
             foreach (string str in inValue)
             {
-                if (value.Contains(str))
-                {
-                    return value.LastIndexOf(str);
-                }
+                iRet = Math.Max(iRet, value.LastIndexOf(str));
             }
 
-            return -1;
+            return iRet;
         }
         public static int LastIndexAnyOf(this string value, params char[] inValue)
         {
+            int iRet = -1;
+
             foreach (char chr in inValue)
             {
-                if (value.Contains(chr))
-                {
-                    return value.LastIndexOf(chr);
-                }
+                iRet = Math.Max(iRet, value.LastIndexOf(chr));
             }
 
-            return -1;
+            return iRet;
         }
         public static int Count(this string value, char chr)
         {
@@ -535,6 +546,12 @@ namespace CustomExtensions
             {
                 return value.Substring(0, idx + 1);
             }
+        }
+        public static string GetExtension(this string value)
+        {
+            int i = value.LastIndexOf('.');
+            if (i < 0) return string.Empty;
+            return value.Substring(i);
         }
     }
 
